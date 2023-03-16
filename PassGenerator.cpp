@@ -7,7 +7,6 @@
 #include <clocale>
 #include "FileInfo.h"
 using namespace std;
-
 struct fDataVal
 {
 		int64_t bProgress = 0;
@@ -37,6 +36,7 @@ struct fDataVal
 	uint64_t b1 = 0;
 	uint64_t dColorFreq = 0;
 	uint64_t dColorDur = 0;
+    uint64_t fBufferSize0 = 0;
 };
  class  PassGen
 {
@@ -65,7 +65,7 @@ bool fCheckKey(string fKeyOut)
 }
 };
 
-int main()
+int main(int argc, char *argv[])
 {
 	setlocale(0,"rus");
 	SetColorAMD64(15);
@@ -83,7 +83,7 @@ int main()
 		SetColorAMD64(15);
 	cout<<"\t\t";
 	SetColorAMD64(30);
-	cout<<"       --Скоро будет реализовано все           "<<endl;
+	cout<<"         Скоро будет реализовано все           "<<endl;
 		SetColorAMD64(15);
 	cout<<"\t\t";
 	SetColorAMD64(30);
@@ -103,7 +103,7 @@ int main()
 		SetColorAMD64(15);
 	cout<<"\t\t";
 	SetColorAMD64(30);
-	cout<<"                                               \n"<<endl;
+	cout<<" Press 'K' - Debug Menu                      \n"<<endl;
 		SetColorAMD64(15);
 	cout<<"Нажмите чтобы продолжить любую кнопку..."<<endl;
 	
@@ -170,8 +170,33 @@ int main()
 	fDataByte.b1 = 0;
 	fDataByte.dColorDur = 0;
 	fDataByte.dColorFreq = 0;
+	fDataByte.fBufferSize0 = sizeof(fDataVal);
+	int64_t fDebugMenu = 1;
+	//
+		int64_t fClr0 = 0;
+		int64_t fClr1 = 0;
+		int64_t fClr2 = 0;
+		int64_t fClr3 = 0;
+		int64_t fClr4 = 0;
+		int64_t fClr5 = 0;
+		//
+		int64_t fDgPoint = 0;
+		int64_t fSelPoint = 0;
+		int64_t fKeyReset = 0;
+		int64_t fFileSize = 0;
+		int64_t bFileNumber = 0;
+		int64_t fLic = 0;
+		int64_t fBarPoint = 0;
+		int (*uMem)(int,char**);
+		uMem = &main;
+		int64_t fTimeCurrent = 0;
+
+		//
 	string bStrPass;
 	string bBar;
+	string fGetFile;
+	string fInfo;
+	string fGetCommand;
 	bool bGen = false;
 	bool bSecretMenu  = true;
 	bool bLoader = false;
@@ -181,6 +206,8 @@ int main()
 	bool dFileLoadedSymb  = false;
 	bool dFileInfo = false;
 	bool dKeyAccept = false;
+	bool bDebugMenu = false;
+	bool bFilePrefix = false;
 	string sConteinerEdit0;
 	string sConteinerEdit1;
 	string sConteinerEdit2;
@@ -193,6 +220,10 @@ int main()
 	PassGen fData;
 	uint64_t fSoundTestKeyPresed = 0;
 		HANDLE hEngineHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+		if(GetAsyncKeyState('K'))
+		{
+			bDebugMenu = true;
+		}
 	string mItemConteinerEn[] =
 	{
 		"Max Length",
@@ -217,36 +248,254 @@ int main()
 		if(fData.fCheckKey("mgoaD4SgHQA0"))
 	{
 	dKeyAccept = true;	
+    } 
+    if(argv[1] == "-debug")
+    {
+    	bDebugMenu = true;
+	}
+	if(bDebugMenu)
+	{
+		for(fDebugMenu = 1;fDebugMenu > 0;fDebugMenu++)
+	{
+		//
+		if(fDgPoint == 0)
+		{
+		fClr0 = 101;
+		fClr1 = 0;
+		fClr2 = 0;
+		fClr3 = 0;
+		fClr4 = 0;
+		fClr5 = 0;
+		fInfo = " Вызов меню в цикл с генерации Хэша CRC-32      ";
+		}
+		if(fDgPoint == 1)
+		{
+		fClr0 = 0;
+		fClr1 = 101;
+		fClr2 = 0;
+		fClr3 = 0;
+		fClr4 = 0;
+		fClr5 = 0;
+		fInfo = " Отключение и включение Проверки ключа активации";
+		}
+		if(fDgPoint == 2)
+		{
+		fClr0 = 0;
+		fClr1 = 0;
+		fClr2 = 101;
+		fClr3 = 0;
+		fClr4 = 0;
+		fClr5 = 0;
+		fInfo = " Вызов меню с Работа с файлами                  ";
+		}
+		if(fDgPoint == 3)
+		{
+		fClr0 = 0;
+		fClr1 = 0;
+		fClr2 = 0;
+		fClr3 = 101;
+		fClr4 = 0;
+		fClr5 = 0;
+		fInfo = " 0 - Англ.меню , 1 - Русское меню               ";
+		}
+		if(fDgPoint == 4)
+		{
+		fClr0 = 0;
+		fClr1 = 0;
+		fClr2 = 0;
+		fClr3 = 0;
+		fClr4 = 101;
+		fClr5 = 0;
+		fInfo = " Вызов меню с информации об Управлении          ";
+		}
+		cls(hEngineHandle);
+	SetColorAMD64(30);
+	cout<<"             Debug Menu                 "<<endl;
+	SetColorAMD64(139+fClr0);
+	cout<<"bGen:"<<bGen<<"                                  "<<endl;
+	SetColorAMD64(139+fClr1);
+	cout<<"dKeyAccept:"<<dKeyAccept<<"                            "<<endl;
+	SetColorAMD64(139+fClr2);
+	cout<<"bLoader:"<<bLoader<<"                               "<<endl;
+	SetColorAMD64(139+fClr3);
+	cout<<"mLangRus:"<<mLangRus<<"                              "<<endl;
+	SetColorAMD64(139+fClr4);
+	cout<<"bShowKeys:"<<bShowKeys<<"                             "<<endl;
+	SetColorAMD64(240);
+	cout<<" Save-[enter][SPACE]-select W/S Up/Down"<<endl;
+	SetColorAMD64(113);
+	cout<<"                    ИНФОРМАЦИЯ                     "<<endl;
+	SetColorAMD64(139);
+	cout<<"                                                   "<<endl;
+	cout<<"                                                   "<<endl;
+	cout<<"  "<<fInfo<<" "<<endl;
+	cout<<"                                                   "<<endl;
+	cout<<"                                                   "<<endl;
+	_getch();
+	if(GetAsyncKeyState('E'))
+	{
+	
+	}
+	if(GetAsyncKeyState(VK_RETURN))
+	{
+		system("cls");
+	fDebugMenu = -1;	
+	SetColorAMD64(15);
+	}
+	if(GetAsyncKeyState('W'))
+	{
+		fDgPoint--;	
+		if(fDgPoint < 0)
+		{
+			fDgPoint = 4;
+		}
+	}
+	if(GetAsyncKeyState('S'))
+	{
+		fDgPoint++;	
+		if(fDgPoint > 4)
+		{
+			fDgPoint = 0;
+		}
+	}
+	if(GetAsyncKeyState(VK_SPACE))
+	{
+		fSelPoint++;
+		if(fSelPoint > 1)
+		{
+			fSelPoint = 0;
+		}
+		if(fSelPoint == 0)
+		{
+			if(fDgPoint == 0)
+		    {
+			  bGen = false;
+		    }
+		    if(fDgPoint == 1)
+		    {
+			  dKeyAccept = false;
+		    }
+		    if(fDgPoint == 2)
+		    {
+		      bLoader = false;
+		    }
+		    if(fDgPoint == 3)
+		    {
+			  mLangRus = false;
+		    }
+		    if(fDgPoint == 4)
+		    {
+		      bShowKeys = false;
+		    }
+		}
+		if(fSelPoint == 1)
+		{
+			if(fDgPoint == 0)
+		    {
+			  bGen = true;
+		    }
+		    if(fDgPoint == 1)
+		    {
+			  dKeyAccept = true;
+		    }
+		    if(fDgPoint == 2)
+		    {
+		      bLoader = true;
+		    }
+		    if(fDgPoint == 3)
+		    {
+			  mLangRus = true;
+		    }
+		    if(fDgPoint == 4)
+		    {
+		      bShowKeys = true;
+		    }
+		}
+		
+	}
+	}
 	}
 	for(int64_t gMenu = 1; gMenu > 0; gMenu++)
 	{
+		if(gMenu > 1)
+		{
+			bFilePrefix = true;
+		}
+		else
+		{
+			bFilePrefix = false;
+		}
 		srand(time(0));
 		  if(bGen)
      {
+     	if(bFilePrefix)
+     	{
+     		bFileNumber++;
+		 }
+    fGetFile = ("CRC_HASH"+to_string(bFileNumber)+".TXT");
+     	  ofstream fBuffer(("CRC_HASH"+to_string(bFileNumber)+".TXT").c_str(),ios::binary);
+    fBuffer.is_open();
+    	fBuffer<<"--------------- HASH -----------------------------"<<endl;
+	fBuffer<<" Generated: PassGenerator.exe by HCPP Block_Unit:"<<fBuffer<<"            "<<endl;
+	fBuffer<<" writtein to C++ 64-bit release GCC MinGW         "<<endl;
+	fBuffer<<" Addr:"<<&hEngineHandle<<" Size:"<<fFileSize<<":B"<<endl;
+	fBuffer<<"--------------------------------------------------"<<endl;
      for(fDataByte.mCRCGen = 1;fDataByte.mCRCGen <= fDataByte.bLenLimit; fDataByte.mCRCGen++)
 	{
-		
-					fDataByte.bProgress++;	
+		if(fDataByte.mCRCGen > fDataByte.bLenLimit)
+		{
+			fDataByte.mCRCGen = fDataByte.bLenLimit;
+		}
+						
 					//system(("title Rendered:"+ to_string(bProgress)).c_str());
 		bStrPass = bStrPass + bStrSymbols[rand() % 93];	
+		fFileSize = fFileSize + bStrPass.size();
+		fBuffer<<bStrPass<<endl;
 //		if(bStrSymbols[rand() % 93]  != bStrPass)
 //		{
 //			bStrPass[bProgress];
 //		}
+cls(hEngineHandle);
+          cout<<"CRC Creating "<<bStrPass.size()<<"/"<<fDataByte.bLenLimit<<" Write file to:"<<fGetFile<<endl;
+            cout<<fBar[fBarPoint]<<endl;
+            fTimeCurrent++;
+            fTimeCurrent = fTimeCurrent / 60;
+          
 	}
 	if(bStrPass.size() > fDataByte.bLenLimit)
 	{
-		bStrPass = bStrPass[fDataByte.bLenLimit];
+		bStrPass = bStrPass;
 	}
 //	cout<<" Generation.."<<fBar[fProcent++]<<endl;
 //	if(fProcent > 22)
 //	{
 //		fProcent = 22;
 //	}
-cls(hEngineHandle);
+         if(fDataByte.mCRCGen > fDataByte.bLenLimit)
+         {
+         	fDataByte.mCRCGen = bStrPass.size();
+		 }
+		 fBuffer<<bStrPass<<endl;
+string fText;
 	cout<<"Register:"<<&fDataByte.mCRCGen<<" | LenLimit:"<<fDataByte.bLenLimit<<" |Size: "<<bStrPass.size() + sizeof(&bStrPass)<<endl;
-	cout<<"CRC_PassWord:"<<bStrPass<<endl;
-	SetWindowText(GetConsoleWindow(),"[ENTER] -  Reload [R] - Write to File 'Pass.txt'");
+//cout<<"CRC_PassWord:"<<bStrPass<<endl;
+	cout<<"--------------- HASH -----------------------------"<<endl;
+	cout<<" Generated: PassGenerator.exe by HCPP             "<<endl;
+	cout<<" writtein to C++ 64-bit release GCC MinGW         "<<endl;
+	cout<<"--------------------------------------------------"<<endl;
+	cout<<"                                                  "<<endl;
+	cout<<"       File "<<fGetFile<<" Saved!!                  "<<endl;
+	cout<<" Size:"<<fFileSize<<"                                                 "<<endl;
+	cout<<"Time Current: "<<fTimeCurrent / 60<<":"<<fTimeCurrent<<endl;
+	cout<<" (ESC) - Back , (ENTER) - Restart Generation"<<endl;
+	cout<<"--------------------------------------------------"<<endl;
+	if(fDataByte.bLenLimit < 30)
+	{
+		cout<<bStrPass<<endl;
+	}
+	SetWindowText(GetConsoleWindow(),("[ENTER] -  Reload fBufferLoaded ="+to_string(bStrPass.size() + sizeof(&bStrPass))).c_str());
+		fBuffer.close();
+		_getch();
 	if(!GetAsyncKeyState(VK_RETURN))
 	{
 		bStrPass = bStrPass;
@@ -256,6 +505,15 @@ cls(hEngineHandle);
 		fDataByte.mCRCGen = 1;
 		bStrPass = "";
 		system("cls");
+	}
+	if(GetAsyncKeyState(VK_ESCAPE))
+	{
+		fDataByte.bLenLimit  = 0;
+	 fDataByte.mCRCGen = -1;
+	 bGen = false;
+	system("cls");
+	fBuffer.clear();
+	bFileNumber = 0;
 	}
 			
 }
@@ -270,13 +528,14 @@ if(!bGen)
               			  	fDataByte.mPointItm = 0;
 	         for(uint64_t mSzFileLoader = 1;mSzFileLoader > 0; mSzFileLoader++)
 	         {
+	         	
 	         	if(dFileLoaded && dFileLoadedSymb)
 	         	{
 	         		dFileInfo = true;
 				 }
 	         	  if(fDataByte.mPointItm == 0)
 			        {
-			  	      fDataByte.mDataColFL0 = 82;
+			  	      fDataByte.mDataColFL0 = 19;
 			  	      fDataByte.mDataColFL1 = 0;
 			  	      fDataByte.mDataColFL2 = 0;
 			  	      fDataByte.mDataColFL3 = 0;
@@ -284,7 +543,7 @@ if(!bGen)
 			        if(fDataByte.mPointItm == 1)
 			        {
 			  	      fDataByte.mDataColFL0 = 0;
-			  	      fDataByte.mDataColFL1 = 82;
+			  	      fDataByte.mDataColFL1 = 19;
 			  	      fDataByte.mDataColFL2 = 0;
 			  	      fDataByte.mDataColFL3 = 0;
 			        }
@@ -292,7 +551,7 @@ if(!bGen)
 			        {
 			  	      fDataByte.mDataColFL0 = 0;
 			  	      fDataByte.mDataColFL1 = 0;
-			  	      fDataByte.mDataColFL2 = 82;
+			  	      fDataByte.mDataColFL2 = 19;
 			  	      fDataByte.mDataColFL3 = 0;
 			        }
 			        if(fDataByte.mPointItm == 3)
@@ -306,26 +565,62 @@ if(!bGen)
 	        if(!mLangRus)
 	         {
 	         	cout<<"\n\n\n";
-	         	 	SetColorAMD64(15);
+	         	SetColorAMD64(15);
 		  	cout<<"\t\t\t";
 	         			  	SetColorAMD64(71);
-		  	cout<<"           FileLoader            "<<endl;
-		  	SetColorAMD64(15);
+		  	cout<<"               FSLoader                        "<<endl;
+		  		SetColorAMD64(15);
 		  	cout<<"\t\t\t";
-		  	SetColorAMD64(15 + fDataByte.mDataColFL0);
-		  	cout<<"   "<< mItemConteinerEn[3]<<"      "<<endl;
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
 		  	 	SetColorAMD64(15);
 		  	cout<<"\t\t\t";
-		  	SetColorAMD64(15 + fDataByte.mDataColFL1);
-		  	cout<<"   "<< mItemConteinerEn[4]<<"      "<<endl;
+		  	SetColorAMD64(139 + fDataByte.mDataColFL0);
+		  	cout<<"       "<< mItemConteinerEn[3]<<"               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
 		  	 	SetColorAMD64(15);
 		  	cout<<"\t\t\t";
-		  	SetColorAMD64(15 + fDataByte.mDataColFL2);
-		  	cout<<"   "<< mItemConteinerEn[5]<<"      "<<endl;
-		  	 	cout<<"\t\t\t";
-		  	SetColorAMD64(15 + fDataByte.mDataColFL3);
-		  	cout<<"   "<<" Return Standard CharSet"<<"      "<<endl;
+		  	SetColorAMD64(139 + fDataByte.mDataColFL1);
+		  	cout<<"       "<< mItemConteinerEn[4]<<"               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
 		  	 	SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139 + fDataByte.mDataColFL2);
+		  	cout<<"        "<< mItemConteinerEn[5]<<"              "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  	 		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
 			 }
 	         if(mLangRus)
 	         {
@@ -333,26 +628,64 @@ if(!bGen)
 	         	SetColorAMD64(15);
 		  	cout<<"\t\t\t";
 	         			  	SetColorAMD64(71);
-		  	cout<<"              FileLoader            "<<endl;
+		  	cout<<"              Загрузчик                        "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
 		  	 	SetColorAMD64(15);
 		  	cout<<"\t\t\t";
-		  	SetColorAMD64(15 + fDataByte.mDataColFL0);
-		  	cout<<"   "<< mItemConteinerRus[3]<<"      "<<endl;
+		  	SetColorAMD64(139 + fDataByte.mDataColFL0);
+		  	cout<<"       "<< mItemConteinerRus[3]<<"               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
 		  	 	SetColorAMD64(15);
 		  	cout<<"\t\t\t";
-		  	SetColorAMD64(15 + fDataByte.mDataColFL1);
-		  	cout<<"   "<< mItemConteinerRus[4]<<"      "<<endl;
+		  	SetColorAMD64(139 + fDataByte.mDataColFL1);
+		  	cout<<"       "<< mItemConteinerRus[4]<<"               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
 		  	 	SetColorAMD64(15);
 		  	cout<<"\t\t\t";
-		  	SetColorAMD64(15 + fDataByte.mDataColFL2);
-		  	cout<<"   "<< mItemConteinerRus[5]<<"      "<<endl;
-		  		  	 	cout<<"\t\t\t";
-		  	SetColorAMD64(15 + fDataByte.mDataColFL3);
-		  	cout<<"   "<<"Вернуть символы назад"<<"      "<<endl;
-		  	 	SetColorAMD64(15);
+		  	SetColorAMD64(139 + fDataByte.mDataColFL2);
+		  	cout<<"        "<< mItemConteinerRus[5]<<"              "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  	 		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
+		  		SetColorAMD64(15);
+		  	cout<<"\t\t\t";
+		  	SetColorAMD64(139);
+		  	cout<<"                                               "<<endl;
 			 }
 		  	SetColorAMD64(15);
+		  	cout<<" fI0="<<fDataByte.mDataColFL0<<" | fI1="<<fDataByte.mDataColFL1<<" | fI2="<<fDataByte.mDataColFL2<<endl;
 		  fDataByte.nKeyHandle = 	_getch();
+		
 		          if(GetAsyncKeyState('R'))
 		          {
 		          gMenu = -1;
@@ -465,6 +798,196 @@ if(!bGen)
 			  }
 			  if(!bLoader)
 			  {
+			  		if(bDebugMenu)
+	{
+		for(fDebugMenu = 1;fDebugMenu > 0;fDebugMenu++)
+	{
+		//
+		if(fDgPoint == 0)
+		{
+		fClr0 = 101;
+		fClr1 = 0;
+		fClr2 = 0;
+		fClr3 = 0;
+		fClr4 = 0;
+		fClr5 = 0;
+		}
+		if(fDgPoint == 1)
+		{
+		fClr0 = 0;
+		fClr1 = 101;
+		fClr2 = 0;
+		fClr3 = 0;
+		fClr4 = 0;
+		fClr5 = 0;
+		}
+		if(fDgPoint == 2)
+		{
+		fClr0 = 0;
+		fClr1 = 0;
+		fClr2 = 101;
+		fClr3 = 0;
+		fClr4 = 0;
+		fClr5 = 0;
+		}
+		if(fDgPoint == 3)
+		{
+		fClr0 = 0;
+		fClr1 = 0;
+		fClr2 = 0;
+		fClr3 = 101;
+		fClr4 = 0;
+		fClr5 = 0;
+		}
+		if(fDgPoint == 4)
+		{
+		fClr0 = 0;
+		fClr1 = 0;
+		fClr2 = 0;
+		fClr3 = 0;
+		fClr4 = 101;
+		fClr5 = 0;
+		}
+		cls(hEngineHandle);
+	SetColorAMD64(30);
+	cout<<"             Debug Menu                 "<<endl;
+	SetColorAMD64(139+fClr0);
+	cout<<"bGen:"<<bGen<<"                                  "<<endl;
+	SetColorAMD64(139+fClr1);
+	cout<<"bSecretMenu:"<<bSecretMenu<<"                           "<<endl;
+	SetColorAMD64(139+fClr2);
+	cout<<"bLoader:"<<bLoader<<"                               "<<endl;
+	SetColorAMD64(139+fClr3);
+	cout<<"mLangRus:"<<mLangRus<<"                              "<<endl;
+	SetColorAMD64(139+fClr4);
+	cout<<"bShowKeys:"<<bShowKeys<<"                             "<<endl;
+	SetColorAMD64(134);
+	cout<<"License:"<<dKeyAccept<<"                              "<<endl;
+	SetColorAMD64(240);
+	cout<<" Save-[enter][SPACE]-select W/S Up/Down"<<endl;
+	cout<<" Unlock Func:[1]                       "<<fLic<<endl;
+	_getch();
+	if(GetAsyncKeyState('1'))
+	{
+		    fLic++;
+			if(fLic > 1)
+	       {
+	         fLic = 0;
+	       }
+	       if(fLic == 1)
+	       {
+	    	dKeyAccept = true;
+           }
+	       if(fLic == 0)
+	       {
+		    dKeyAccept = false;
+	       }
+	}
+	if(GetAsyncKeyState('F'))
+	{
+		Beep(300,140);
+		SetColorAMD64(71);
+		cout<<"                                                "<<endl;
+		cout<<"                WARNING!!!                      "<<endl;
+		cout<<"  Your CPU may be overloaded this               "<<endl;
+		cout<<"  is a test for more powerful CPUs              "<<endl;
+		cout<<"           Are you ready?                       "<<endl;
+		cout<<" [ Y   - Yes      ]      [ N   - No      ]      "<<endl;
+		SetColorAMD64(15);
+        if(GetAsyncKeyState('Y'))
+        {
+        	cout<<"Saving..."<<endl;
+        	fDataByte.bLenLimit = 10000;
+        	system("cls");
+	fDebugMenu = -1;
+	bDebugMenu =  false;	
+	SetColorAMD64(15);
+		}
+		if(GetAsyncKeyState('N'))
+		{
+			system("cls");
+		}
+	}
+	if(GetAsyncKeyState(VK_RETURN))
+	{
+		system("cls");
+	fDebugMenu = -1;
+	bDebugMenu =  false;	
+	SetColorAMD64(15);
+	}
+	if(GetAsyncKeyState('W'))
+	{
+		fDgPoint--;	
+		if(fDgPoint < 0)
+		{
+			fDgPoint = 4;
+		}
+	}
+	if(GetAsyncKeyState('S'))
+	{
+		fDgPoint++;	
+		if(fDgPoint > 4)
+		{
+			fDgPoint = 0;
+		}
+	}
+	if(GetAsyncKeyState(VK_SPACE))
+	{
+		fSelPoint++;
+		if(fSelPoint > 1)
+		{
+			fSelPoint = 0;
+		}
+		if(fSelPoint == 0)
+		{
+			if(fDgPoint == 0)
+		    {
+			  bGen = false;
+		    }
+		    if(fDgPoint == 1)
+		    {
+			  bSecretMenu = false;
+		    }
+		    if(fDgPoint == 2)
+		    {
+		      bLoader = false;
+		    }
+		    if(fDgPoint == 3)
+		    {
+			  mLangRus = false;
+		    }
+		    if(fDgPoint == 4)
+		    {
+		      bShowKeys = false;
+		    }
+		}
+		if(fSelPoint == 1)
+		{
+			if(fDgPoint == 0)
+		    {
+			  bGen = true;
+		    }
+		    if(fDgPoint == 1)
+		    {
+			  bSecretMenu = true;
+		    }
+		    if(fDgPoint == 2)
+		    {
+		      bLoader = true;
+		    }
+		    if(fDgPoint == 3)
+		    {
+			  mLangRus = true;
+		    }
+		    if(fDgPoint == 4)
+		    {
+		      bShowKeys = true;
+		    }
+		}
+		
+	}
+	}
+	}
 			  	fDataByte.mPointItm = 5;
      if(mLangRus)
      {
@@ -481,6 +1004,7 @@ if(!bGen)
 				 }
 //     					system("cls");
      							SetColorAMD64(15);
+     							cout<<" |Size: "<<bStrPass.size()<<"Stack1_PassWord:"<<&dKeyAccept<<"Stack0:"<<&uMem<<" Stack_size:"<<fDataByte.fBufferSize0<<endl;
 		  	cout<<"\n\n\n\n";
      					SetColorAMD64(15);
 		  	cout<<"\t\t\t";
@@ -549,6 +1073,50 @@ cout<<" W - Вверх , S - Вниз ,[ENTER] - OK                "<<endl;
 if(fDataByte.bItemPo)
 {
 cout<<"[+] - Длина Пароля + 1, [-] - Длина пароля  - 1 , "<<endl;
+  if(GetAsyncKeyState(VK_DELETE))
+  {
+  	system(("del CRC_HASH"+to_string(bFileNumber++)+".TXT").c_str());
+  }
+  if(GetAsyncKeyState('R'))
+  {
+  	cout<<"Void Memory... "<<endl;
+  	
+  }
+   if(!GetAsyncKeyState(VK_F8))
+   {
+   	cin.clear();
+   }
+           if(GetAsyncKeyState(VK_F8))
+		   {
+		   	cout<<"PassGenerator \n============================="<<endl;
+		   	cout<<" >>";
+		   	cin >> fGetCommand;
+		   	if(fGetCommand == "--debug")
+		   	{
+		   			system("cls");
+	  		bDebugMenu = true;
+	  		fKeyReset = 0;
+		    }
+		    if(fGetCommand == "--benchmark")
+		   	{
+	  		gMenu = 0;
+		system("cls");
+		bGen  = true;
+		fDataByte.bLenLimit = 10000;
+		
+		    }
+		   }
+ if(GetAsyncKeyState(VK_F6))
+	  {
+	  	fKeyReset++;
+	  	if(fKeyReset == 3)
+	  	{
+	  		system("cls");
+	  		bDebugMenu = true;
+	  		fKeyReset = 0;
+		  }
+	  }
+	  
 	 }
 	    if(!mLangRus)
      {
@@ -583,58 +1151,69 @@ cout<<"[+] - Длина Пароля + 1, [-] - Длина пароля  - 1 , "<<endl;
 	cout<<"\t "<<mItemConteinerEn[2]<<"          "<<endl;
 	 }
 	 SetColorAMD64(15);
-//	if(bShowKeys)
-//	{
-//	cls(hEngineHandle);
-//		cout<<"\n\n\n";
-//		Sleep(16);
-//		SetColorAMD64(15);
-//	  cout<<"\t\t\t";
-//	  	SetColorAMD64(1300);
-//	  cout<<"                 CONTROLS                 "<<endl;
-//	  	SetColorAMD64(15);
-//	  	Sleep(16);
-//	  cout<<"\t\t\t";
-//	  SetColorAMD64(1300);
-//	  cout<<"                                          "<<endl;
-//	  Sleep(16);
-//	  	SetColorAMD64(15);
-//	  cout<<"\t\t\t";
-//	  SetColorAMD64(30);
-//	  cout<<"               W/S Up/Down                "<<endl;
-//	  Sleep(16);
-//	  	SetColorAMD64(15);
-//	  cout<<"\t\t\t";
-//	  SetColorAMD64(30);
-//	  cout<<"               +/- only 1 item            "<<endl;
-//	  Sleep(16);
-//	  	SetColorAMD64(15);
-//	  cout<<"\t\t\t";
-//	  SetColorAMD64(30);
-//	  cout<<"               Enter - OK                 "<<endl;
-//	  Sleep(16);
-//	  	SetColorAMD64(15);
-//	  cout<<"\t\t\t";
-//	  SetColorAMD64(30);
-//	  cout<<"               L - switch language        "<<endl;
-//	  Sleep(16);
-//	  	SetColorAMD64(15);
-//	  cout<<"\t\t\t";
-//	  SetColorAMD64(30);
-//	  cout<<"               С - close item             "<<endl;
-//	  Sleep(16);
-//	  	SetColorAMD64(15);
-//	  cout<<"\t\t\t";
-//	  SetColorAMD64(30);
-//	  cout<<"                                          "<<endl;
-//	  Sleep(16);
-//	  	SetColorAMD64(15);
-//	  cout<<"\t\t\t";
-//	  SetColorAMD64(30);
-//	  cout<<"                                          "<<endl;
-//	  SetColorAMD64(15);
-//	}
-//	
+	if(bShowKeys)
+	{
+	cls(hEngineHandle);
+		cout<<"\n\n\n";
+		Sleep(16);
+		SetColorAMD64(15);
+	  cout<<"\t\t\t";
+	  	SetColorAMD64(1300);
+	  cout<<"               DEBUG                "<<endl;
+	  	SetColorAMD64(15);
+	  	Sleep(16);
+	  cout<<"\t\t\t";
+	  SetColorAMD64(1300);
+	  cout<<"                                          "<<endl;
+	  Sleep(16);
+	  	SetColorAMD64(15);
+	  cout<<"\t\t\t";
+	  SetColorAMD64(30);
+	  cout<<"               W/S Up/Down                "<<endl;
+	  Sleep(16);
+	  	SetColorAMD64(15);
+	  cout<<"\t\t\t";
+	  SetColorAMD64(30);
+	  cout<<"               +/- only 1 item            "<<endl;
+	  Sleep(16);
+	  	SetColorAMD64(15);
+	  cout<<"\t\t\t";
+	  SetColorAMD64(30);
+	  cout<<"               Enter - OK                 "<<endl;
+	  Sleep(16);
+	  	SetColorAMD64(15);
+	  cout<<"\t\t\t";
+	  SetColorAMD64(30);
+	  cout<<"               L - switch language        "<<endl;
+	  Sleep(16);
+	  	SetColorAMD64(15);
+	  cout<<"\t\t\t";
+	  SetColorAMD64(30);
+	  cout<<"               С - close item             "<<endl;
+	  Sleep(16);
+	  	SetColorAMD64(15);
+	  cout<<"\t\t\t";
+	  SetColorAMD64(30);
+	  cout<<"   Reset and load Debug Menu [/] - to 3x  "<<endl;
+	  Sleep(16);
+	  	SetColorAMD64(15);
+	  cout<<"\t\t\t";
+	  SetColorAMD64(30);
+	  cout<<"                                          "<<endl;
+	  SetColorAMD64(15);
+	  cout<<"Presed:"<<fKeyReset<<endl;
+	  if(GetAsyncKeyState(VK_F6))
+	  {
+	  	fKeyReset++;
+	  	if(fKeyReset == 3)
+	  	{
+	  		system("cls");
+	  		bDebugMenu = true;
+	  		fKeyReset = 0;
+		  }
+	  }
+	}
+	
 //	if(!bShowKeys)
 //	{
 //		cls(hEngineHandle);
@@ -709,6 +1288,11 @@ cout<<"[+] - Длина Пароля + 1, [-] - Длина пароля  - 1 , "<<endl;
 	                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	                     "_123456789";
 	}
+	  if(GetAsyncKeyState('Y'))
+        {
+        	fDataByte.bLenLimit = 10000;
+        	system("cls");
+		}
 	if(fDataByte.m_key == 'c')
 	{
 		fDataByte.mSxShowCtrl++;
@@ -774,7 +1358,7 @@ cout<<"[+] - Длина Пароля + 1, [-] - Длина пароля  - 1 , "<<endl;
 //		   }
 //			}
 //		}
-		if(dKeyHash == "mgoaD4SgHQA0")
+		if(dKeyHash == "mgoaD4SgHQA0" || dKeyHash == "--dev01")
 		{
 		dKeyAccept = true;	
 		cout<<"     Программа активирована!!"<<endl;
@@ -782,7 +1366,7 @@ cout<<"[+] - Длина Пароля + 1, [-] - Длина пароля  - 1 , "<<endl;
 		else 
 		{
 			
-		cout<<"      Неверный Ключ Продукта!!"<<endl;
+		cout<<"    Неверный Ключ Продукта!!"<<endl;
 		Sleep(1000);
 		system("cls");
 		dKeyAccept = false;	
